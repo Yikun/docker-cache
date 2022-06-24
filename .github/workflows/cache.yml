@@ -28,8 +28,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/yikun/apache-spark-github-action-image:latest
-          cache-from: yikunkero/apache-spark-github-action-image:latest
+          tags: ghcr.io/yikun/apache-spark-github-action-image-other:latest
+          cache-from: ghcr.io/yikun/apache-spark-github-action-image:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
