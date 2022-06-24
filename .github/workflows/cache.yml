@@ -28,7 +28,7 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
-          tags: ghcr.io/${{ github.repository_owner }}/apache-spark-github-action-image:latest
+          tags: ghcr.io/yikun/apache-spark-github-action-image:latest
           cache-from: yikunkero/apache-spark-github-action-image:latest
       -
         name: Image digest
