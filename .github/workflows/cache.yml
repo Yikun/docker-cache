@@ -29,7 +29,7 @@ jobs:
         with:
           push: true
           tags: ghcr.io/yikun/apache-spark-github-action-image-other:latest
-          cache-from: type=registry,ref=ghcr.io/yikun/apache-spark-github-action-image:cache
+          cache-from: type=registry,ref=yikunkero/apache-spark-github-action-image:latest
       -
         name: Image digest
         run: echo ${{ steps.docker_build.outputs.digest }}
