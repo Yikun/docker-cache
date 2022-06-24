@@ -24,7 +24,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Get lower case name
         id: owner
-        run: echo "::set-output name=repo_owner::$(echo ${{ github.repository_owner }})"
+        run: echo "::set-output name=repo_owner::$(echo ${{ github.repository_owner }}) | tr "[:upper:]" "[:lower:]""
       -
         name: Build and push
         id: docker_build
