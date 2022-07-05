@@ -1,0 +1,26 @@
+name: ci
+on:
+  push:
+    branches: main
+  pull_request:
+    branches: main
+
+jobs:
+  main:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Image digest
+        run: echo ${{ steps.docker_build.outputs.digest }}
+      - 
+        name: delete image
+        run: |
+          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/orgs/ORG/packages/container/apache-spark-github-action-image
+          curl \
+            -X DELETE \
+            -H "Accept: application/vnd.github+json" \ 
+            -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            https://api.github.com/user/packages/container/apache-spark-github-action-image/versions/pyspark-master-2613730442
+          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/orgs/ORG/packages/container/apache-spark-github-action-image
+          
+        
