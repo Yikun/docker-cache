@@ -7,8 +7,6 @@ on:
 
 jobs:
   main:
-    permissions:
-      packages: write
     runs-on: ubuntu-latest
     steps:
       -
