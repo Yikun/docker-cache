@@ -15,8 +15,8 @@ jobs:
       - 
         name: delete image
         run: |
-          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image
-          curl -X DELETE -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image/versions/1486140
+          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image/versions
+          # curl -X DELETE -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image/versions/1486140
           curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image
           
         
