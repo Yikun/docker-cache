@@ -40,14 +40,14 @@ jobs:
     # https://github.com/actions/delete-package-versions/issues/74
     runs-on: ubuntu-20.04
     env:
-      GHCR_DEL_SECRET: ${{ secrets.GHCR_DEL }}
+      GHCR_DEL: ${{ secrets.GHCR_DEL }}
     steps:
     - name: Cleanup docker image
       # Only cleanup the ci images when users set the secrets in fork repo
-      if: ${{ env.GHCR_DEL_SECRET }}
+      if: ${{ env.GHCR_DEL }}
       run: >
         curl
         -X DELETE
         -H "Accept: application/vnd.github+json"
         -H "Authorization: token ${{ secrets.GHCR_DEL }}"
-        https://api.github.com/user/packages/container/apache-spark-ci-image-pyspark-master-2615326616:latest
+        https://api.github.com/user/packages/container/apache-spark-ci-image-${{ needs.precondition.outputs.img_tag }}
