@@ -14,6 +14,7 @@ jobs:
         run: echo "job1"
 
   job2:
+    if: false
     runs-on: ubuntu-latest
     steps:
       -
@@ -50,4 +51,4 @@ jobs:
         -X DELETE
         -H "Accept: application/vnd.github+json"
         -H "Authorization: token ${{ secrets.GHCR_DEL }}"
-        https://api.github.com/user/packages/container/apache-spark-ci-image-${{ needs.precondition.outputs.img_tag }}
+        https://api.github.com/user/packages/container/apache-spark-ci-image-pyspark-master-2615369717
