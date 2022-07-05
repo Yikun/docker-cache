@@ -6,15 +6,48 @@ on:
     branches: main
 
 jobs:
-  main:
+  job1:
     runs-on: ubuntu-latest
     steps:
       -
         name: Image digest
-        run: echo ${{ steps.docker_build.outputs.digest }}
-      - 
-        name: delete image
-        run: |
-          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image
-          curl -X DELETE -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/users/packages/container/apache-spark-github-action-image
-          curl -H "Accept: application/vnd.github+json" -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" https://api.github.com/user/packages/container/apache-spark-github-action-image
+        run: echo "job1"
+
+  job2:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Image digest
+        run: echo "job2"
+  
+  job3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Image digest
+        run: exit 1
+
+  infra-image-post:
+    if: true
+    needs: [ job1, job2, job3 ]
+    # Note that: there are only GHCR creation permission for secrets.GITHUB_TOKEN
+    # If you want to clean up the CI images, you need to:
+    # - 1. Generate the token from https://github.com/settings/tokens with `write:packages` and `delete:packages`
+    # - 2. Add the the token as secrets `GHCR_DEL` in https://github.com/{username}}/spark/settings/secrets/actions
+    # Consider there are no limit of GHCR, this step is not required.
+    # https://docs.github.com/en/billing/managing-billing-for-github-packages/about-billing-for-github-packages#about-billing-for-github-packages
+    # TODO: Switch to actions/delete-package-versions when it supported:
+    # https://github.com/actions/delete-package-versions/issues/74
+    runs-on: ubuntu-20.04
+    env:
+      GHCR_DEL_SECRET: ${{ secrets.GHCR_DEL }}
+    steps:
+    - name: Cleanup docker image
+      # Only cleanup the ci images when users set the secrets in fork repo
+      if: ${{ env.GHCR_DEL_SECRET }}
+      run: >
+        curl
+        -X DELETE
+        -H "Accept: application/vnd.github+json"
+        -H "Authorization: token ${{ secrets.GHCR_DEL }}"
+        https://api.github.com/user/packages/container/apache-spark-ci-image-pyspark-master-2615326616:latest
