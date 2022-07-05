@@ -28,7 +28,7 @@ jobs:
         run: exit 1
 
   infra-image-post:
-    if: true
+    if: always()
     needs: [ job1, job2, job3 ]
     # Note that: there are only GHCR creation permission for secrets.GITHUB_TOKEN
     # If you want to clean up the CI images, you need to:
