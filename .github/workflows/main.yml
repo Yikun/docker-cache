@@ -1,0 +1,11 @@
+name: "Build"
+
+on:
+  push:
+    branches:
+    - '**'
+
+jobs:
+  call-build-and-test:
+    name: Run
+    uses: ./.github/workflows/test.yml
