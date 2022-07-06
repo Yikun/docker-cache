@@ -9,5 +9,4 @@ jobs:
   call-build-and-test:
     name: Run
     uses: ./.github/workflows/test.yml
-    secrets:
-      GHCR_DEL: ${{ secrets.GHCR_DEL }}
+    secrets: inherit
