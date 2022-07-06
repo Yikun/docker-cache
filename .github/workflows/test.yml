@@ -47,7 +47,7 @@ jobs:
     # https://github.com/actions/delete-package-versions/issues/74
     runs-on: ubuntu-20.04
     env:
-      GHCR_DEL: ${{ secrets.GHCR_DEL }}
+      GHCR_DEL: ${{ github.token }}
     steps:
     - name: Cleanup docker image
       # Only cleanup the ci images when users set the secrets in fork repo
