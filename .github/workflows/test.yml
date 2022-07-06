@@ -1,9 +1,15 @@
-name: ci
+name: Build and test
+
 on:
-  push:
-    branches: main
-  pull_request:
-    branches: main
+  workflow_call:
+    inputs:
+      java:
+        required: false
+        type: string
+        default: 8
+    secrets:
+      GHCR_DEL:
+        required: false
 
 jobs:
   job1:
