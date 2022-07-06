@@ -7,9 +7,6 @@ on:
         required: false
         type: string
         default: 8
-    secrets:
-      GHCR_DEL:
-        required: false
 
 jobs:
   job1:
