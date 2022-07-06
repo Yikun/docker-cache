@@ -56,5 +56,5 @@ jobs:
         curl
         -X DELETE
         -H "Accept: application/vnd.github+json"
-        -H "Authorization: token ${{ secrets.GHCR_DEL }}"
+        -H "Authorization: token ${{ github.token }}"
         https://api.github.com/user/packages/container/apache-spark-ci-image-pyspark-master-2615369717
