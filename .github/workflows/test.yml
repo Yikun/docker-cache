@@ -46,7 +46,7 @@ jobs:
 
 
   job2:
-    if: ${{ inputs.branch }} == 'master'
+    if: false
     runs-on: ubuntu-latest
     steps:
       -
@@ -61,7 +61,7 @@ jobs:
         run: echo "job3"
 
   infra-image-post:
-    if: ${{ inputs.branch }} == 'branch-3.3'
+    if: true
     needs: [ infra-image, job1, job2, job3 ]
     # TODO: Switch to actions/delete-package-versions when it supported:
     # https://github.com/actions/delete-package-versions/issues/74
