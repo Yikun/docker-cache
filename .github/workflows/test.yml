@@ -11,7 +11,7 @@ on:
         description: Branch to run the build against
         required: false
         type: string
-        default: master
+        default: branch-3.3
 
 jobs:
   infra-image:
@@ -46,7 +46,7 @@ jobs:
 
 
   job2:
-    if: false
+    if: ${{ inputs.branch == "master" }}
     runs-on: ubuntu-latest
     steps:
       -
@@ -58,19 +58,14 @@ jobs:
     steps:
       -
         name: Image digest
-        run: exit 1
+        run: echo "job3"
 
   infra-image-post:
-    if: always()
+    if: ${{ inputs.branch == "master" }}
     needs: [ infra-image, job1, job2, job3 ]
     # TODO: Switch to actions/delete-package-versions when it supported:
     # https://github.com/actions/delete-package-versions/issues/74
     runs-on: ubuntu-20.04
     steps:
     - name: Cleanup docker image
-      run: >
-        curl
-        -X DELETE
-        -H "Accept: application/vnd.github+json"
-        -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}"
-        https://api.github.com/user/packages/container/apache-spark-github-action-image-other
+      run: echo "???"
