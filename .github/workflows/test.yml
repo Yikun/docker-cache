@@ -7,14 +7,37 @@ on:
         required: false
         type: string
         default: 8
+      branch:
+        description: Branch to run the build against
+        required: false
+        type: string
+        default: master
 
 jobs:
+  infra-image:
+    runs-on: ubuntu-latest
+    outputs:
+      img_name: ${{ steps.infra-image-outputs.outputs.img_name }}
+    steps:
+      - name: Set infra ouput
+        id: infra-image-outputs
+        run: |
+          # Convert to lowercase to meet docker repo name requirement
+          echo ::set-output name=repo_user::$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          echo ::set-output name=image_name::$(echo "apache-spark-ci-image-${{ inputs.branch }}-${{ github.run_id }}")
+      - name: print
+        run: |
+          echo "ghcr.io/${{ steps.infra-image-outputs.outputs.repo_user }}/${{ steps.infra-image-outputs.outputs.image_name }}"
+
+
   job1:
     runs-on: ubuntu-latest
     steps:
       -
         name: Image digest
-        run: echo "job1"
+        run: |
+          echo ${{ needs.infra-image.outputs.img_name }}
+          echo ${{ needs.infra-image.outputs.img_url }}
 
   job2:
     if: false
@@ -49,9 +72,5 @@ jobs:
     - name: Cleanup docker image
       # Only cleanup the ci images when users set the secrets in fork repo
       if: ${{ env.GHCR_DEL }}
-      run: >
-        curl
-        -X DELETE
-        -H "Accept: application/vnd.github+json"
-        -H "Authorization: token ${{ secrets.GHCR_DEL }}"
-        https://api.github.com/user/packages/container/apache-spark-ci-image-master-2619881549
+      run: |
+        echo https://api.github.com/user/packages/container/apache-spark-ci-image-${{ needs.infra-image.outputs.img_name }}
