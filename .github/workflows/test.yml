@@ -31,7 +31,7 @@ jobs:
           echo ::set-output name=image_name::$IMG_NAME
       - name: print
         run: |
-          echo "ghcr.io/${{ steps.infra-image-outputs.outputs.repo_user }}/${{ steps.infra-image-outputs.outputs.image_name }}"
+          echo "${{ steps.infra-image-outputs.outputs.image_url }}"
 
 
   job1:
