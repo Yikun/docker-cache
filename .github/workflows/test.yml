@@ -77,3 +77,4 @@ jobs:
       uses: actions/delete-package-versions@v3
       with:
         package-name: 'apache-spark-github-action-image-other'
+        token: ${{ secrets.GHCR_DEL }}
