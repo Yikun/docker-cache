@@ -25,8 +25,8 @@ jobs:
         run: |
           # Convert to lowercase to meet docker repo name requirement
           REPO_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
-          IMG_NAME=$(echo "apache-spark-ci-image-${{ inputs.branch }}-${{ github.run_id }}")
-          IMG_URL=$(echo "ghcr.io/$REPO_OWNER/$IMG_NAME")
+          IMG_NAME="apache-spark-ci-image-${{ inputs.branch }}-${{ github.run_id }}"
+          IMG_URL="ghcr.io/$REPO_OWNER/$IMG_NAME"
           echo ::set-output name=image_url::$IMG_URL
           echo ::set-output name=image_name::$IMG_NAME
       - name: print
