@@ -2,7 +2,7 @@ name: "Schedule"
 
 on:
   schedule:
-    - cron: '*/60 * * * *'
+    - cron: '*/6 * * * *'
 
 jobs:
   call-build-and-test:
