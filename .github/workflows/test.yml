@@ -1,0 +1,71 @@
+name: Build and test
+
+on:
+  workflow_call:
+    inputs:
+      java:
+        required: false
+        type: string
+        default: 8
+      branch:
+        description: Branch to run the build against
+        required: false
+        type: string
+        default: branch-3.3
+
+jobs:
+  infra-image:
+    runs-on: ubuntu-latest
+    outputs:
+      image_name: ${{ steps.infra-image-outputs.outputs.image_name }}
+      image_url: ${{ steps.infra-image-outputs.outputs.image_url }}
+    steps:
+      - name: Set infra ouput
+        id: infra-image-outputs
+        run: |
+          # Convert to lowercase to meet docker repo name requirement
+          REPO_OWNER=$(echo "${{ github.repository_owner }}" | tr '[:upper:]' '[:lower:]')
+          IMG_NAME="apache-spark-ci-image-${{ inputs.branch }}-${{ github.run_id }}"
+          IMG_URL="ghcr.io/$REPO_OWNER/$IMG_NAME"
+          echo ::set-output name=image_url::$IMG_URL
+          echo ::set-output name=image_name::$IMG_NAME
+      - name: print
+        run: |
+          echo "${{ steps.infra-image-outputs.outputs.image_url }}"
+
+
+  job1:
+    runs-on: ubuntu-latest
+    needs: [infra-image]
+    steps:
+      -
+        name: Image digest
+        run: |
+          echo ${{ needs.infra-image.outputs.image_name }}
+          echo ${{ needs.infra-image.outputs.image_url }}
+
+
+  job2:
+    if: false
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Image digest
+        run: echo "job2"
+  
+  job3:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Image digest
+        run: echo "job3"
+
+  infra-image-post:
+    if: always() && false
+    needs: [ infra-image, job1, job2, job3 ]
+    # TODO: Switch to actions/delete-package-versions when it supported:
+    # https://github.com/actions/delete-package-versions/issues/74
+    runs-on: ubuntu-20.04
+    steps:
+    - name: Cleanup docker image
+      run: echo "???"
