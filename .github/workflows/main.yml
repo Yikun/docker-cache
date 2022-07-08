@@ -10,3 +10,7 @@ jobs:
     name: Run
     uses: ./.github/workflows/test.yml
     secrets: inherit
+    with:
+      java: 8
+      branch: master
+      cron: false
