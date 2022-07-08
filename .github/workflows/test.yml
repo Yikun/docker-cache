@@ -32,6 +32,8 @@ jobs:
       - name: print
         run: |
           echo "${{ steps.infra-image-outputs.outputs.image_url }}"
+          echo ${{ github.actor }}
+          echo ${{ github.repository_owner }}
 
 
   job1:
