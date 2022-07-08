@@ -1,8 +1,9 @@
 name: "Schedule master"
 
 on:
-  schedule:
-    - cron: '*/6 * * * *'
+  push:
+    branches:
+    - '**'
 
 jobs:
   call-build-and-test:
