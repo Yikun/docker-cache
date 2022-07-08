@@ -71,6 +71,9 @@ jobs:
             ${{ steps.infra-image-outputs.outputs.image_url }}
 
   job1:
+    if: |
+      java == '8' &&
+      ${{ inputs.branch }} == 'master'
     runs-on: ubuntu-latest
     needs: [infra-image]
     container:
