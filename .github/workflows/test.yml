@@ -26,7 +26,7 @@ jobs:
       image_url:  >-
         ${{
           (inputs.cron == false && inputs.branch == 'master' && steps.infra-image-outputs.outputs.image_url)
-          || (inputs.cron == true && inputs.branch == 'master' && 'ghcr.io/apache/spark/apache-spark-github-action-image-cache:${{ inputs.branch }}')
+          || (inputs.cron == true && inputs.branch == 'master' && format('ghcr.io/apache/spark/apache-spark-github-action-image-cache:{0}', inputs.branch))
           || 'dongjoon/apache-spark-github-action-image:20220207'
         }}
     steps:
