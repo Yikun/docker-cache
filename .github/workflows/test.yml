@@ -49,8 +49,6 @@ jobs:
         # In order to fetch changed files
         with:
           fetch-depth: 0
-          repository: apache/spark
-          ref: ${{ inputs.branch }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
