@@ -12,7 +12,12 @@ on:
         required: false
         type: string
         default: branch-3.3
-
+      cron:
+        description: >-
+          Cron schedule job or not.
+        required: false
+        type: boolean
+        default: false
 jobs:
   infra-image:
     runs-on: ubuntu-latest
