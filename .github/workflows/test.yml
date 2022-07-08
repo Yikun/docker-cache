@@ -69,9 +69,6 @@ jobs:
           push: true
           tags: |
             ${{ steps.infra-image-outputs.outputs.image_url }}
-          # Use the infra image cache to speed up
-          cache-from: type=registry,ref=ghcr.io/apache/spark/apache-spark-github-action-image-cache:${{ inputs.branch }}
-
 
   job1:
     runs-on: ubuntu-latest
@@ -101,13 +98,3 @@ jobs:
       -
         name: Image digest
         run: echo "job3"
-
-  infra-image-post:
-    if: always() && false
-    needs: [ infra-image, job1, job2, job3 ]
-    # TODO: Switch to actions/delete-package-versions when it supported:
-    # https://github.com/actions/delete-package-versions/issues/74
-    runs-on: ubuntu-20.04
-    steps:
-    - name: Cleanup docker image
-      run: echo "???"
