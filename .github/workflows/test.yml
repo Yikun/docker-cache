@@ -62,7 +62,7 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./dev/infra/
+          context: ./
           push: true
           tags: |
             ${{ steps.infra-image-outputs.outputs.image_url }}
