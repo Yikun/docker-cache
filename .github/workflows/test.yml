@@ -11,7 +11,7 @@ on:
         description: Branch to run the build against
         required: false
         type: string
-        default: branch-3.3
+        default: master
       cron:
         description: >-
           Cron schedule job or not.
@@ -51,9 +51,10 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
       - name: Checkout Spark repository
         uses: actions/checkout@v2
-        # In order to fetch changed files
         with:
           fetch-depth: 0
+          repository: apache/spark
+          ref: ${{ inputs.branch }}
       -
         name: Set up QEMU
         uses: docker/setup-qemu-action@v1
@@ -65,11 +66,12 @@ jobs:
         id: docker_build
         uses: docker/build-push-action@v2
         with:
-          context: ./
+          context: ./dev/infra/
           push: true
           tags: |
             ${{ steps.infra-image-outputs.outputs.image_url }}
-
+          # Use the infra image cache to speed up
+          cache-from: type=registry,ref=ghcr.io/apache/spark/apache-spark-github-action-image-cache:${{ inputs.branch }}
   job1:
     runs-on: ubuntu-latest
     needs: [infra-image]
