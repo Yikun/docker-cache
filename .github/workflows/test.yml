@@ -77,7 +77,11 @@ jobs:
     if: always()
     container:
       # Currently, only enable docker build from cache for `master` branch jobs
-      image: ${{ needs.infra-image.outputs.image_url }}
+      image:  >-
+        ${{
+          needs.infra-image.outputs.image_url
+          || 'dongjoon/apache-spark-github-action-image:20220207'
+        }}
     steps:
       -
         name: Image digest
