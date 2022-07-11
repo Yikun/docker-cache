@@ -20,13 +20,14 @@ on:
         default: false
 jobs:
   infra-image:
+    if: false
     runs-on: ubuntu-latest
     outputs:
       image_name: ${{ steps.infra-image-outputs.outputs.image_name }}
+      # || (inputs.cron == true && inputs.branch != 'master' && format('ghcr.io/apache/spark/apache-spark-github-action-image-cache:{0}', inputs.branch))
       image_url:  >-
         ${{
           (inputs.branch == 'master' && steps.infra-image-outputs.outputs.image_url)
-          || (inputs.cron == true && inputs.branch != 'master' && format('ghcr.io/apache/spark/apache-spark-github-action-image-cache:{0}', inputs.branch))
           || 'dongjoon/apache-spark-github-action-image:20220207'
         }}
     steps:
@@ -73,9 +74,14 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     needs: [infra-image]
+    if: always()
     container:
       # Currently, only enable docker build from cache for `master` branch jobs
-      image: ${{ needs.infra-image.outputs.image_url }}
+      image:  >-
+        ${{
+          needs.infra-image.outputs.image_url
+          || 'dongjoon/apache-spark-github-action-image:20220207'
+        }}
     steps:
       -
         name: Image digest
