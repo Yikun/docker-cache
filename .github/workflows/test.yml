@@ -74,6 +74,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     needs: [infra-image]
+    if: always()
     container:
       # Currently, only enable docker build from cache for `master` branch jobs
       image: ${{ needs.infra-image.outputs.image_url }}
